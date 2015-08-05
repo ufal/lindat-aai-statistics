@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "build": "build.sh",
-    "postinstall": "[ $NODE_ENV!='production' ] && ./node_modules/.bin/bower install",
+    "postinstall": "[ -s './node_modules/.bin/bower' ] && ./node_modules/.bin/bower install; exit 0",
     "test": "echo \"Error: no test specified\" && exit 0",
     "start": "node app.js"
   },
