@@ -5,6 +5,7 @@ set -e
 rm -rf dist
 mkdir -p dist/tabs
 cp -r public/tabs/*.html dist/tabs
+cp bower_components/angular-ui-grid/*.{ttf,woff,eot,svg} dist
 ./node_modules/.bin/useref public/index.html dist/index.html --css uglify --js uglify
 
 if [ -n "$TRAVIS" ]; then

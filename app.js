@@ -5,7 +5,7 @@ var xml2js = require("xml2js");
 var _ = require('lodash');
 
 var app = express();
-if (process.env.NODE_ENV == 'production') {
+if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'dist')));
 } else {
   app.use(express.static(path.join(__dirname, 'public')));
