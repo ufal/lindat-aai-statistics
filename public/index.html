@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html ng-app="lindat-aai">
+<head>
+  <title>Lindat AAI Statistics</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <!-- build:css styles.css -->
+  <link rel="stylesheet" type="text/css" href="../bower_components/bootstrap/dist/css/bootstrap.css">
+  <!-- bower:css -->
+  <link rel="stylesheet" href="../bower_components/angular-ui-grid/ui-grid.css" />
+  <link rel="stylesheet" href="../bower_components/angular-loading-bar/build/loading-bar.css" />
+  <!-- endbower -->
+  <!-- endbuild -->
+</head>
+<body ng-controller="LindatAAIController as aai">
+  <div class="container">
+    <h1>Lindat AAI Statistics</h1>
+    <div class="row">
+      <tabset>
+        <tab ng-repeat="tab in aai.tabs" heading="{{tab.title}}">
+          <ng-include src="tab.url"></ng-include>
+        </tab>
+      </tabset>
+    </div>
+  </div>
+<!-- build:js vendor.js -->
+<!-- bower:js -->
+<script src="../bower_components/angular/angular.js"></script>
+<script src="../bower_components/jquery/dist/jquery.js"></script>
+<script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="../bower_components/angular-ui-grid/ui-grid.js"></script>
+<script src="../bower_components/angular-loading-bar/build/loading-bar.js"></script>
+<script src="../bower_components/lodash/lodash.js"></script>
+<!-- endbower -->
+<!-- endbuild -->
+<!-- build:js app.js -->
+<script src="lindat-aai.module.js"></script>
+<script src="tabs/entity-search.controller.js"></script>
+<script src="tabs/metadata-compare.controller.js"></script>
+<!-- endbuild -->
+</body>
+</html>

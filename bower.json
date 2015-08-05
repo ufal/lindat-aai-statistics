@@ -1,0 +1,36 @@
+{
+  "name": "lindat-aai-statistics",
+  "version": "1.0.0",
+  "homepage": "https://github.com/ufal/lindat-aai-statistics",
+  "authors": [
+    "Michal Sedlak <sedlakmichal@gmail.com>"
+  ],
+  "description": "Lindat AAI Statistics",
+  "moduleType": [
+    "node"
+  ],
+  "keywords": [
+    "Lindat",
+    "AAI",
+    "Shibboleth"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.3",
+    "bootstrap": "~3.3.5",
+    "angular-bootstrap": "~0.13.2",
+    "angular-ui-grid": "~3.0.1",
+    "angular-loading-bar": "~0.8.0",
+    "lodash": "~3.10.1"
+  },
+  "resolutions": {
+    "angular": "~1.4.3"
+  }
+}

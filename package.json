@@ -1,0 +1,41 @@
+{
+  "name": "lindat-aai-statistics",
+  "version": "1.0.0",
+  "description": "Lindat AAI Statistics",
+  "main": "app.js",
+  "scripts": {
+    "build": "build.sh",
+    "postinstall": "./node_modules/.bin/bower install",
+    "test": "echo \"Error: no test specified\" && exit 0",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ufal/lindat-aai-statistics.git"
+  },
+  "keywords": [
+    "Lindat",
+    "AAI",
+    "Shibboleth"
+  ],
+  "author": "Michal Sedlák <sedlak@ufal.mff.cuni.cz>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ufal/lindat-aai-statistics/issues"
+  },
+  "homepage": "https://github.com/ufal/lindat-aai-statistics",
+  "devDependencies": {
+    "bower": "^1.4.1",
+    "useref-file": "^0.2.1",
+    "wiredep": "^3.0.0-beta"
+  },
+  "dependencies": {
+    "express": "^4.13.3",
+    "lodash": "^3.10.1",
+    "request": "^2.60.0",
+    "xml2js": "^0.4.9"
+  },
+  "engines": {
+    "node": "0.12.2"
+  }
+}

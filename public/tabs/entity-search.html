@@ -1,0 +1,15 @@
+<div ng-controller="EntitySearchController as vm">
+  <h2>Entity search</h2>
+  <form class="form-inline" style="margin: 10px 0">
+    <div class="form-group form-group-lg">
+      <button type="button" class="btn btn-primary" ng-click="vm.search(vm.feedUrl)">Load IdPs</button>
+      <div class="input-group">
+        <input type="url" class="form-control" style="width:600px" ng-model="vm.feedUrl" placeholder="discofeed url">
+        <div class="input-group-addon">
+          IdPs count: <span class="label label-warning">{{vm.gridOpts.data.length || 0}}</span>
+        </div>
+      </div>
+    </div>
+  </form>
+  <div ui-grid="vm.gridOpts" style="width:100%;height:600px"></div>
+</div>

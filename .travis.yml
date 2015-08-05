@@ -1,0 +1,9 @@
+language: node_js
+node_js:
+- '0.11'
+deploy:
+  provider: heroku
+  api_key:
+    secure: vIRAorgQnfyepBnC9KfdGS+nDvjN9+0yNZaqnU+1zTEkBoSLww6XSrIJ/qz6EHGz0j5Tc4+lfz5K8yJ7szAvNp8PXayIGxsSFexid3NXGL0J3OuN1Q5FhXtXN7GA9yyVHkPe+AN9dh10VfTFppA3U1RqW/e+moqQ2qQ8u9wN2DMUqgSkYTdpj8r1JwnmZ35USwCZUdMvIxlgjeuZQuLbpbquBuY5H25dZY6ubbf7APEbINLTNxKE0yOqHJlqUyW+F8RmoMgwJE+229qSQ/N4FbB1SiGIeASkFx5bBSPFzAHND6fhXi63SwkY8pN/32Xi7QgZ2p2c9Sfeisk7gYGq5H1TNI3yP5taie/KPztlhyj/ZMO2EY5jZQEB0uNg+FvHzQ0zomCsJA+C5VBkWaKG4RcEScub3Q/e4fIas7qZudm7Jquk6mFIWwrfF06QwdfVqdpVYbGxD+CNMXX1q0IZyjZ4gDyqbeqkbQbtlgriB76Xhx0ebHulpXwUHQRmgrrSG9c9Ke8x+qsM9Rxq7zqwZqBZgPIKIAOPFebwGdqOkwJbwSeOUSzYjKC2luVbRUDJu/fVQQYi+uzCuVg+AVlyLIAp/C5n/iGOIpVH1RBpPzXM1hOXQXwheEJ8ftheOmJAXG3XUIOkYrhbbJfMgGu1JzUk0Gg3HamXvYI6JbEciXQ=
+  app: lindat-aai-statistics
+  on: master
