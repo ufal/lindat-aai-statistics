@@ -9,6 +9,7 @@ angular.module('lindat-aai').controller('MetadataCompareController', ['$http', '
     enableSorting: true,
     showGridFooter: true,
     columnDefs: [
+      { name: 'type', width: 100 },
       { name:'metadata1' },
       { name:'metadata2' }
     ],
@@ -31,11 +32,19 @@ angular.module('lindat-aai').controller('MetadataCompareController', ['$http', '
     return _.last(domain.split('.'));
   }
 
-  function compareMetadata(m1, m2) {
+  vm.compareMetadata = function (m1, m2, type) {
+    if (type) {
+      m1 = _.filter(m1, function (item) { return item[1] == type; });
+      m2 = _.filter(m2, function (item) { return item[1] == type; });
+    }
     var m = vm.gridOpts.data = [],
-      both = _.intersection(m1, m2)
-      only1 = _.difference(m1, m2),
-      only2 = _.difference(m2, m1);
+      m1Entities = _.indexBy(m1, function (item) { return item[0] }),
+      m2Entities = _.indexBy(m2, function (item) { return item[0] }),
+      m1Keys = _.keys(m1Entities),
+      m2Keys = _.keys(m2Entities),
+      both = _.intersection(m1Keys, m2Keys),
+      only1 = _.difference(m1Keys, m2Keys),
+      only2 = _.difference(m2Keys, m1Keys);
 
     // domain stats
     var domains = {
@@ -54,6 +63,7 @@ angular.module('lindat-aai').controller('MetadataCompareController', ['$http', '
 
     _.forEach(both, function (item) {
       m.push({
+        type: m1Entities[item][1],
         metadata1: item,
         metadata2: item
       });
@@ -61,18 +71,20 @@ angular.module('lindat-aai').controller('MetadataCompareController', ['$http', '
 
     _.forEach(only1, function (item) {
       m.push({
+        type: m1Entities[item][1],
         metadata1: item,
         metadata2: ''
       });
     });
 
-    _.forEach(only2, function(item) {
+    _.forEach(only2, function (item) {
       m.push({
+        type: m2Entities[item][1],
         metadata1: '',
         metadata2: item
       });
     });
-  }
+  };
 
   vm.submit = function (url1, url2) {
     vm.loading = true;
@@ -81,7 +93,9 @@ angular.module('lindat-aai').controller('MetadataCompareController', ['$http', '
     function loaded() {
       loader--;
       if (loader === 0) {
-        compareMetadata(m1, m2);
+        vm.m1 = m1;
+        vm.m2 = m2;
+        vm.compareMetadata(m1, m2);
         vm.loading = false;
       }
     }

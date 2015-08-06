@@ -10,6 +10,15 @@
       <input type="url" class="form-control" ng-model="vm.metadata2" placeholder="metadata URL 2">
     </div>
     <button class="btn btn-primary" ng-disabled="vm.loading" ng-click="vm.submit(vm.metadata1, vm.metadata2)">Submit</button>
+    <div ng-show="vm.stats" class="form-group">
+      <label>Filter entity type</label>
+      <select ng-model="vm.filterType" ng-change="vm.compareMetadata(vm.m1, vm.m2, vm.filterType)" class="form-control">
+        <option value="">All</option>
+        <option value="SP">SP</option>
+        <option value="IdP">IdP</option>
+        <option value="AA">AA</option>
+      </select>
+    </div>
   </form>
   <div ui-grid="vm.gridOpts" style="width:100%;height:600px" ui-grid-auto-resize></div>
   <table class="table table-bordered table-striped">
