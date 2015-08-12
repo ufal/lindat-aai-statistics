@@ -1,4 +1,4 @@
-angular.module('lindat-aai').controller('EntitySearchController', ['$http', '$sce', function($http, $sce) {
+angular.module('lindat-aai').controller('EntitySearchController', ['$http', function($http) {
   var vm = this;
 
   vm.feedUrl = 'https://lindat.mff.cuni.cz/Shibboleth.sso/DiscoFeed';
@@ -12,27 +12,10 @@ angular.module('lindat-aai').controller('EntitySearchController', ['$http', '$sc
     columnDefs: [
       { name:'entityId', field: 'entityID' },
       { name:'DisplayNames', field: 'DisplayNames', cellTemplate: htmlTpl },
-      { name:'Descriptions', field: 'Descriptions', cellTemplate: htmlTpl },
+      { name:'Descriptions', field: 'Descriptions', cellTemplate: htmlTpl }
     ],
     data: []
-  }
-
-  function formatLangCol(res) {
-    var arr = [];
-    if (!res) {
-      return '';
-    }
-    for (var i = 0, ii = res.length; i < ii; i++) {
-      var val = res[i], str = '';
-      if (val.lang) {
-        str += '[' + val.lang + '] ';
-      }
-      str += val.value;
-      arr.push(str);
-    };
-
-    return $sce.trustAsHtml(arr.join('<br>'));
-  }
+  };
 
   vm.search = function(url) {
     console.log(url);
@@ -41,7 +24,7 @@ angular.module('lindat-aai').controller('EntitySearchController', ['$http', '$sc
         vm.error = null;
         vm.gridOpts.data = data;
       })
-      .error(function(error, status) {
+      .error(function(error) {
         vm.error = error;
       });
   };

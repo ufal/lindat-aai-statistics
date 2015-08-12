@@ -1,4 +1,4 @@
-angular.module('lindat-aai').controller('MetadataCompareController', ['$http', '$sce', function($http, $sce) {
+angular.module('lindat-aai').controller('MetadataCompareController', ['$http', '$q', function($http, $q) {
   var vm = this;
 
   vm.metadata1 = 'https://infra.clarin.eu/aai/prod_md_about_spf_idps.xml';
@@ -14,7 +14,7 @@ angular.module('lindat-aai').controller('MetadataCompareController', ['$http', '
       { name:'metadata2' }
     ],
     data: []
-  }
+  };
 
   function extractTopDomain(url) {
     var domain;
@@ -88,28 +88,15 @@ angular.module('lindat-aai').controller('MetadataCompareController', ['$http', '
 
   vm.submit = function (url1, url2) {
     vm.loading = true;
-    var loader = 2, m1, m2;
-
-    function loaded() {
-      loader--;
-      if (loader === 0) {
-        vm.m1 = m1;
-        vm.m2 = m2;
-        vm.compareMetadata(m1, m2);
-        vm.loading = false;
-      }
-    }
-
-    $http.get('./metadata', { params: {url: url1} })
-      .success(function (data) {
-        m1 = data;
-        loaded();
-      });
-
-    $http.get('./metadata', { params: {url: url2} })
-      .success(function (data) {
-        m2 = data;
-        loaded();
-      });
+    $q.all([
+      $http.get('./metadata', { params: {url: url1} }),
+      $http.get('./metadata', { params: {url: url2} })
+    ]).then(function (ms) {
+      console.log(ms);
+      var m1 = vm.m1 = ms[0].data,
+          m2 = vm.m2 = ms[1].data;
+      vm.compareMetadata(m1, m2);
+      vm.loading = false;
+    });
   };
 }]);
