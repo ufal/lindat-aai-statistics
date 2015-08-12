@@ -8,6 +8,8 @@ angular.module('lindat-aai').controller('MetadataCompareController', ['$http', '
     enableFiltering: true,
     enableSorting: true,
     showGridFooter: true,
+    enableGridMenu: true,
+    exporterMenuPdf: false,
     columnDefs: [
       { name: 'type', width: 100 },
       { name:'metadata1' },

@@ -9,6 +9,8 @@ angular.module('lindat-aai').controller('EntitySearchController', ['$http', func
     enableFiltering: true,
     enableSorting: true,
     showGridFooter: true,
+    enableGridMenu: true,
+    exporterMenuPdf: false,
     columnDefs: [
       { name:'entityId', field: 'entityID' },
       { name:'DisplayNames', field: 'DisplayNames', cellTemplate: htmlTpl },
