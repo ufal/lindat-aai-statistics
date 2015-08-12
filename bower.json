@@ -28,7 +28,8 @@
     "angular-bootstrap": "~0.13.2",
     "angular-ui-grid": "~3.0.1",
     "angular-loading-bar": "~0.8.0",
-    "lodash": "~3.10.1"
+    "lodash": "~3.10.1",
+    "lindat-common": "~1.0.3"
   },
   "resolutions": {
     "angular": "~1.4.3"
