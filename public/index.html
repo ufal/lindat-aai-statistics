@@ -9,10 +9,12 @@
   <!-- bower:css -->
   <link rel="stylesheet" href="../bower_components/angular-ui-grid/ui-grid.css" />
   <link rel="stylesheet" href="../bower_components/angular-loading-bar/build/loading-bar.css" />
+  <link rel="stylesheet" href="../bower_components/lindat-common/dist/public/css/lindat.css" />
   <!-- endbower -->
   <!-- endbuild -->
 </head>
 <body ng-controller="LindatAAIController as aai">
+  <header lindat-header></header>
   <div class="container">
     <h1>Lindat AAI Statistics</h1>
     <div class="row">
@@ -23,6 +25,7 @@
       </tabset>
     </div>
   </div>
+  <footer lindat-footer></footer>
 <!-- build:js vendor.js -->
 <!-- bower:js -->
 <script src="../bower_components/angular/angular.js"></script>
@@ -32,6 +35,9 @@
 <script src="../bower_components/angular-ui-grid/ui-grid.js"></script>
 <script src="../bower_components/angular-loading-bar/build/loading-bar.js"></script>
 <script src="../bower_components/lodash/lodash.js"></script>
+<script src="../bower_components/angular-piwik/angular-piwik.js"></script>
+<script src="../bower_components/angular-google-analytics/dist/angular-google-analytics.min.js"></script>
+<script src="../bower_components/lindat-common/dist/public/js/angular-lindat.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 <!-- build:js app.js -->
