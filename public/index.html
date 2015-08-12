@@ -4,13 +4,15 @@
   <title>Lindat AAI Statistics</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="utf-8">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/styles/github.min.css" />
   <!-- build:css styles.css -->
-  <link rel="stylesheet" type="text/css" href="../bower_components/bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
   <!-- bower:css -->
   <link rel="stylesheet" href="../bower_components/angular-ui-grid/ui-grid.css" />
   <link rel="stylesheet" href="../bower_components/angular-loading-bar/build/loading-bar.css" />
   <link rel="stylesheet" href="../bower_components/lindat-common/dist/public/css/lindat.css" />
   <!-- endbower -->
+  <link rel="stylesheet" href="lindat-aai.css" />
   <!-- endbuild -->
 </head>
 <body ng-controller="LindatAAIController as aai">
@@ -26,6 +28,7 @@
     </div>
   </div>
   <footer lindat-footer></footer>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/highlight.min.js"></script>
 <!-- build:js vendor.js -->
 <!-- bower:js -->
 <script src="../bower_components/angular/angular.js"></script>
@@ -38,12 +41,14 @@
 <script src="../bower_components/angular-piwik/angular-piwik.js"></script>
 <script src="../bower_components/angular-google-analytics/dist/angular-google-analytics.min.js"></script>
 <script src="../bower_components/lindat-common/dist/public/js/angular-lindat.js"></script>
+<script src="../bower_components/angular-highlightjs/build/angular-highlightjs.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 <!-- build:js app.js -->
 <script src="lindat-aai.module.js"></script>
 <script src="tabs/entity-search.controller.js"></script>
 <script src="tabs/metadata-compare.controller.js"></script>
+<script src="tabs/metadata-modal.controller.js"></script>
 <!-- endbuild -->
 </body>
 </html>

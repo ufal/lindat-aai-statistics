@@ -21,31 +21,72 @@ app.get('/metadata', function (req, res) {
     return;
   }
 
-  if (cache.get(url)) {
-    res.json(cache.get(url));
+  function extractEntities(entities) {
+    entities = _.get(entities, [ 'md:EntitiesDescriptor', 'md:EntityDescriptor' ], []);
+    if (entities.length) {
+      entities = entities.map(function(entity) {
+        var type = 'AA';
+        if (entity['md:SPSSODescriptor']) {
+          type = 'SP';
+        } else if (entity['md:IDPSSODescriptor']) {
+          type = 'IdP';
+        }
+        return [entity.$.entityID, type];
+      });
+    }
+
+    res.json(entities);
+  }
+
+  var cachedEntities = cache.get(url);
+  if (cachedEntities) {
+    extractEntities(cachedEntities);
+  } else {
+    request(url, function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        xml2js.parseString(body, function (err, result) {
+          // 1 hour expriration
+          cache.put(url, result, 3600000);
+          extractEntities(result);
+        });
+      }
+    });
+  }
+});
+
+app.get('/metadata/entity', function (req, res) {
+  var url = req.query.url,
+    entityId = req.query.id;
+
+  if (!url || !entityId) {
+    res.status(400).send('Url or EntityId invalid or missing');
     return;
   }
 
-  request(url, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      xml2js.parseString(body, function (err, result) {
-        var entities = _.get(result, [ 'md:EntitiesDescriptor', 'md:EntityDescriptor' ], []);
-        if (entities.length) {
-          entities = entities.map(function(entity) {
-            var type = 'AA';
-            if (entity['md:SPSSODescriptor']) {
-              type = 'SP';
-            } else if (entity['md:IDPSSODescriptor']) {
-              type = 'IdP';
-            }
-            return [entity.$.entityID, type];
-          });
-        }
-        // 1 hour expriration
-        res.json(cache.put(url, entities, 3600000));
-      });
+  function extractEntity(entities) {
+    entities = _.get(entities, [ 'md:EntitiesDescriptor', 'md:EntityDescriptor' ], []);
+    var entity = _.find(entities, { $: {entityID: entityId} });
+    if (entity) {
+      var builder = new xml2js.Builder();
+      res.type('xml');
+      res.send(builder.buildObject(entity));
     }
-  });
+  }
+
+  var cachedEntities = cache.get(url);
+  if (cachedEntities) {
+    extractEntity(cachedEntities);
+  } else {
+    request(url, function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        xml2js.parseString(body, function (err, result) {
+          // 1 hour expriration
+          cache.put(url, result, 3600000);
+          extractEntity(result);
+        });
+      }
+    });
+  }
 });
 
 app.get('/feed', function (req, res) {

@@ -4,6 +4,8 @@ angular.module('lindat-aai', [
   'ui.grid.autoResize',
   'ui.grid.selection',
   'ui.grid.exporter',
+  'ui.grid.grouping',
+  'hljs',
   'lindat',
   'angular-loading-bar']);
 

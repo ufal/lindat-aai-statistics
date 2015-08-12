@@ -1,8 +1,31 @@
-angular.module('lindat-aai').controller('MetadataCompareController', ['$http', '$q', function($http, $q) {
+angular.module('lindat-aai').controller('MetadataCompareController', ['$http', '$q', '$modal', function($http, $q, $modal) {
   var vm = this;
 
   vm.metadata1 = 'https://infra.clarin.eu/aai/prod_md_about_spf_idps.xml';
   vm.metadata2 = 'https://mds.edugain.org/';
+
+  vm.gridData = [];
+  vm.filterType = '';
+
+  var aggregations = {
+    countNonEmpty: {
+      label: '',
+      aggregationFn: function (aggregation, fieldValue) {
+        if (fieldValue) {
+          aggregation.count = (aggregation.count || 0) + 1;
+        }
+      },
+      finalizerFn: function (aggregation) {
+        aggregation.value = aggregation.count || 0;
+      }
+    }
+  };
+
+  var metadataColTpl = '<div class="ui-grid-cell-contents" title="TOOLTIP">' +
+    '<button ng-if="COL_FIELD && COL_FIELD.length > 0" title="See metadata" class="btn btn-xs" ng-click="grid.appScope.vm.showMetadata(grid.appScope.vm[col.name], COL_FIELD)">' +
+    '<i class="glyphicon glyphicon-eye-open"></i>' +
+    '</button> ' +
+    '{{COL_FIELD CUSTOM_FILTERS}}</div>';
 
   vm.gridOpts = {
     enableFiltering: true,
@@ -12,8 +35,32 @@ angular.module('lindat-aai').controller('MetadataCompareController', ['$http', '
     exporterMenuPdf: false,
     columnDefs: [
       { name: 'type', width: 100 },
-      { name:'metadata1' },
-      { name:'metadata2' }
+      { name:'metadata1', cellTemplate: metadataColTpl },
+      { name:'metadata2', cellTemplate: metadataColTpl }
+    ],
+    data: []
+  };
+
+  var bothColTpl = '<div class="ui-grid-cell-contents text-center" ' +
+    'ng-class="{\'text-success\': COL_FIELD, \'text-danger\': !COL_FIELD}"><span ng-switch="COL_FIELD">' +
+    '<span ng-switch-when="true">&#10004;</span>' +
+    '<span ng-switch-when="false">&#10007</span>' +
+    '<span ng-switch-default>{{COL_FIELD CUSTOM_FILTERS}}</span>' +
+    '</span></div>';
+
+  vm.statsOpts = {
+    enableSorting: true,
+    enableFiltering: true,
+    enableGridMenu: true,
+    exporterMenuPdf: false,
+    showGridFooter: true,
+    showColumnFooter: true,
+    treeCustomAggregations: aggregations,
+    columnDefs: [
+      { name:'domain', width: 100, grouping: { groupPriority: 0 }, sort: { priority: 0, direction: 'asc' } },
+      { name:'metadata1', treeAggregationType: 'countNonEmpty', cellTemplate: metadataColTpl },
+      { name:'both', width: 60, treeAggregationType: 'countNonEmpty', cellTemplate: bothColTpl },
+      { name:'metadata2', treeAggregationType: 'countNonEmpty', cellTemplate: metadataColTpl }
     ],
     data: []
   };
@@ -34,12 +81,31 @@ angular.module('lindat-aai').controller('MetadataCompareController', ['$http', '
     return _.last(domain.split('.'));
   }
 
-  vm.compareMetadata = function (m1, m2, type) {
-    if (type) {
-      m1 = _.filter(m1, function (item) { return item[1] == type; });
-      m2 = _.filter(m2, function (item) { return item[1] == type; });
-    }
-    var m = vm.gridOpts.data = [],
+  vm.showMetadata = function (url, entityId) {
+    $modal.open({
+      templateUrl: 'metadata-modal.html',
+      controller: 'MetadataModalController',
+      controllerAs: 'vm',
+      size: 'lg',
+      resolve: {
+        url: function () {
+          return url;
+        },
+        entityId: function () {
+          return entityId;
+        }
+      }
+    });
+  };
+
+  vm.filterMetadata = function (type) {
+    var newData = type ?
+      _.filter(vm.gridData, function (item) { return item.type == type; }) : vm.gridData;
+    vm.gridOpts.data = vm.statsOpts.data = newData;
+  };
+
+  vm.compareMetadata = function (m1, m2) {
+    var m = vm.gridData = [],
       m1Entities = _.indexBy(m1, function (item) { return item[0] }),
       m2Entities = _.indexBy(m2, function (item) { return item[0] }),
       m1Keys = _.keys(m1Entities),
@@ -48,25 +114,12 @@ angular.module('lindat-aai').controller('MetadataCompareController', ['$http', '
       only1 = _.difference(m1Keys, m2Keys),
       only2 = _.difference(m2Keys, m1Keys);
 
-    // domain stats
-    var domains = {
-      both: _.groupBy(both, extractTopDomain),
-      m1: _.groupBy(only1, extractTopDomain),
-      m2: _.groupBy(only2, extractTopDomain)
-    };
-    domains.all = _.union(_.keys(domains.both), _.keys(domains.m1), _.keys(domains.m2)).sort();
-
-    vm.stats = {
-      both: both.length,
-      m1: only1.length,
-      m2: only2.length,
-      domains: domains
-    };
-
     _.forEach(both, function (item) {
       m.push({
         type: m1Entities[item][1],
+        domain: extractTopDomain(item),
         metadata1: item,
+        both: true,
         metadata2: item
       });
     });
@@ -74,18 +127,24 @@ angular.module('lindat-aai').controller('MetadataCompareController', ['$http', '
     _.forEach(only1, function (item) {
       m.push({
         type: m1Entities[item][1],
+        domain: extractTopDomain(item),
         metadata1: item,
-        metadata2: ''
+        both: false,
+        metadata2: null
       });
     });
 
     _.forEach(only2, function (item) {
       m.push({
         type: m2Entities[item][1],
-        metadata1: '',
+        domain: extractTopDomain(item),
+        metadata1: null,
+        both: false,
         metadata2: item
       });
     });
+
+    vm.filterMetadata(vm.filterType);
   };
 
   vm.submit = function (url1, url2) {
@@ -94,10 +153,12 @@ angular.module('lindat-aai').controller('MetadataCompareController', ['$http', '
       $http.get('./metadata', { params: {url: url1} }),
       $http.get('./metadata', { params: {url: url2} })
     ]).then(function (ms) {
-      console.log(ms);
       var m1 = vm.m1 = ms[0].data,
           m2 = vm.m2 = ms[1].data;
       vm.compareMetadata(m1, m2);
+    }, function (err) {
+      vm.error = err.data;
+    }).finally(function () {
       vm.loading = false;
     });
   };
