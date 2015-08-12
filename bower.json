@@ -30,7 +30,8 @@
     "angular-loading-bar": "~0.8.0",
     "lodash": "~3.10.1",
     "lindat-common": "~1.0.3",
-    "angular-highlightjs": "~0.4.3"
+    "angular-highlightjs": "~0.4.3",
+    "angular-ui-router": "~0.2.15"
   },
   "resolutions": {
     "angular": "~1.4.3"

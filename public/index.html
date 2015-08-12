@@ -17,14 +17,13 @@
 </head>
 <body ng-controller="LindatAAIController as aai">
   <header lindat-header></header>
-  <div class="container">
+  <div class="container" style="margin-bottom: 20px">
     <h1>Lindat AAI Statistics</h1>
     <div class="row">
-      <tabset>
-        <tab ng-repeat="tab in aai.tabs" heading="{{tab.title}}">
-          <ng-include src="tab.url"></ng-include>
-        </tab>
-      </tabset>
+      <ul class="nav nav-tabs">
+        <li ng-repeat="tab in aai.tabs" role="presentation" ui-sref-active="active"><a ui-sref="{{tab.name}}">{{tab.title}}</a></li>
+      </ul>
+      <div ui-view></div>
     </div>
   </div>
   <footer lindat-footer></footer>
@@ -42,6 +41,7 @@
 <script src="../bower_components/angular-google-analytics/dist/angular-google-analytics.min.js"></script>
 <script src="../bower_components/lindat-common/dist/public/js/angular-lindat.js"></script>
 <script src="../bower_components/angular-highlightjs/build/angular-highlightjs.js"></script>
+<script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 <!-- build:js app.js -->
