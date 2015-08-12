@@ -1,4 +1,10 @@
-angular.module('lindat-aai', ['ui.bootstrap', 'ui.grid', 'ui.grid.autoResize', 'angular-loading-bar']);
+angular.module('lindat-aai', [
+  'ui.bootstrap',
+  'ui.grid',
+  'ui.grid.autoResize',
+  'ui.grid.selection',
+  'ui.grid.exporter',
+  'angular-loading-bar']);
 
 angular.module('lindat-aai').controller('LindatAAIController', function() {
   this.tabs = [
