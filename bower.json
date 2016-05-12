@@ -29,7 +29,7 @@
     "angular-ui-grid": "~3.0.1",
     "angular-loading-bar": "~0.8.0",
     "lodash": "~3.10.1",
-    "lindat-common": "~1.0.3",
+    "lindat-common": "releases",
     "angular-highlightjs": "~0.4.3",
     "angular-ui-router": "~0.2.15"
   },
